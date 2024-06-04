@@ -1,12 +1,19 @@
 import Center from "@/app/_components/layouts/Center.layour";
+import Main from "./_components/templates/Main.template";
+import Group from "./_components/layouts/Group.layout";
+import AlbumDisc from "./_components/molecules/AlbumDisc.molecule";
 
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <Center>
-        <h1>mothmankiller</h1>
-        <p>coming soon.</p>
+    <Main className="h-screen w-screen">
+      <Center className="h-screen w-screen">
+        <Group className="group" data-aos="fade-in">
+          <AlbumDisc
+            albumImg="cover1.jpeg"
+            albumLink="https://open.spotify.com/album/2H2caUAqHgoiCzi22ShNIG?highlight=spotify:track:0T7b4zA5yoAvlJN4MaOh1Y"
+          />
+        </Group>
       </Center>
-    </main>
+    </Main>
   );
 }
