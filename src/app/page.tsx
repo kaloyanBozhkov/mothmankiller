@@ -1,4 +1,3 @@
-import HomeTemplate from "./_components/templates/Home.template";
 import Albums from "./_components/organisms/Albums.organism";
 import Stack from "./_components/layouts/Stack.layout";
 import Group from "./_components/layouts/Group.layout";
@@ -8,25 +7,19 @@ import Events from "./_components/organisms/Events.organism";
 
 export default async function Home() {
   return (
-    <Stack className="bg-green-800">
+    <div className="grid-page min-h-screen w-full">
       <Group className="w-full items-center justify-between p-4">
         <h1 className="font-rex-bold text-[30px] leading-[110%] text-white">
           Mothmankiller
         </h1>
         <DrawerMenu />
       </Group>
-      <HomeTemplate
-        albums={
-          <div className="h-full w-full border-y-[1px] border-white">
-            <Albums />
-          </div>
-        }
-        main={
-          <Stack className="gap-4 p-4">
-            <Events />
-          </Stack>
-        }
-      />
-    </Stack>
+      <div className="full-width mb-4 h-[420px] overflow-hidden border-y-[1px] border-white sm:h-[600px]">
+        <Albums />
+      </div>
+      <Stack className="min-h-[400px] gap-4">
+        <Events />
+      </Stack>
+    </div>
   );
 }

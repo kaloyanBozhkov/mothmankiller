@@ -27,7 +27,7 @@ const DrawerMenu = () => {
       <DrawerTrigger className="text-white" onClick={() => toggleS((p) => !p)}>
         <FontAwesomeIcon icon={s ? faClose : faBars} className="text-[24px]" />
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="m-auto lg:max-w-[900px]">
         <DrawerHeader>
           <Stack className="gap-4">
             <DrawerTitle>

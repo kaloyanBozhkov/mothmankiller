@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import AOS from "@/app/_components/next-components/AOS.next";
+import CSSVaraibles from "../../tailwind/plugins";
 
 export const metadata = {
   title: "Mothmankiller",
@@ -19,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
+      <head>
+        <style type="text/css">{CSSVaraibles}</style>
+      </head>
       <body>
         <TRPCReactProvider>
           <AOS>{children}</AOS>

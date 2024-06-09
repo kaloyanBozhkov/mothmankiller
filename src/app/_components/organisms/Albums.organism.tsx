@@ -40,7 +40,7 @@ const Albums = ({ className }: { className?: string }) => {
             bgImage={`/assets/${cover}`}
             key={idx}
           >
-            <Center className="h-full w-full">
+            <Center className="h-full w-full pb-[20px]">
               <Stack className="gap-4">
                 <Stack className="gap-0">
                   <p className="font-rex-bold text-[16px] text-white">{type}</p>
@@ -59,7 +59,12 @@ const Albums = ({ className }: { className?: string }) => {
           </Main>
         ))}
       </div>
-      <SlideDots count={ALBUMS.length} active={active} onClick={setActive} />
+      <SlideDots
+        count={ALBUMS.length}
+        active={active}
+        onClick={setActive}
+        className="absolute bottom-[20px] left-0 right-0 "
+      />
     </div>
   );
 };

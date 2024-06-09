@@ -13,12 +13,7 @@ const SlideDots = ({
   onClick?: (n: number) => void;
 }) => {
   return (
-    <Group
-      className={twMerge(
-        "absolute bottom-[20px] left-0 right-0 justify-center gap-[6px]",
-        className,
-      )}
-    >
+    <Group className={twMerge("justify-center gap-[6px]", className)}>
       {new Array(count).fill(null).map((_, idx) => (
         <div
           onClick={() => onClick?.(idx)}

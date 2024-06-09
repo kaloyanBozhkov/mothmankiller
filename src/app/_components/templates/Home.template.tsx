@@ -10,9 +10,7 @@ const HomeTemplate = ({
 }) => {
   return (
     <Stack className="h-screen w-screen gap-4">
-      <section className="h-[400px] overflow-hidden sm:h-[600px]">
-        {albums}
-      </section>
+      <section className="h-[400px] sm:h-[600px]">{albums}</section>
       <main>{main}</main>
     </Stack>
   );
