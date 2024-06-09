@@ -4,15 +4,20 @@ import { twMerge } from "tailwind-merge";
 
 const Main = ({
   children,
+  bgImage,
   className = "",
 }: {
   children: ReactNode;
   className?: string;
+  bgImage?: string;
 }) => {
   return (
-    <div className={twMerge("bg-cover-1 bg-cover bg-center", className)}>
-      <div className="fixed inset-0 z-10">{children}</div>
-      <div className="inset fixed z-0 h-full w-full bg-white/10 backdrop-blur-xl"></div>
+    <div
+      className={twMerge("bg-cover bg-center", className)}
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className="absolute inset-0 z-10">{children}</div>
+      <div className="inset absolute z-0 h-full w-full bg-white/10 backdrop-blur-xl"></div>
     </div>
   );
 };

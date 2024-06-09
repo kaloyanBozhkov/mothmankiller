@@ -17,13 +17,13 @@ const Disc = ({
       )}
     >
       {coverImgSrc && (
-        <div className="clip-circlele-44perc absolute inset-[31.83%] z-10 bg-slate-400">
+        <div className="clip-circlele-44perc mask-image-circle absolute inset-[31.83%] z-10 bg-slate-400">
           <Image
             src={coverImgSrc}
             width={200}
             height={200}
             alt="cover"
-            className="clip-circlele-44perc h-full w-full"
+            className="h-full w-full"
           />
         </div>
       )}

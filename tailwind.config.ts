@@ -1,5 +1,4 @@
 import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 import colors from "./tailwind/colors";
 import backgroundImage from "./tailwind/backgroundImages";
 import keyframes from "./tailwind/keyframes";
@@ -11,15 +10,30 @@ export default {
     files: ["./src/**/*.{js,ts,jsx,tsx}"],
   },
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       fontFamily: {
-        sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+        "rex-bold": ["Rex-Bold", "sans-serif"],
+        "rex-bold-inline": ["Rex-BoldInline", "sans-serif"],
+        "rex-light": ["Rex-Light", "sans-serif"],
       },
       colors,
       backgroundImage,
       keyframes,
       animation,
+      // shadcn
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;

@@ -1,19 +1,32 @@
-import Center from "@/app/_components/layouts/Center.layour";
-import Main from "./_components/templates/Main.template";
+import HomeTemplate from "./_components/templates/Home.template";
+import Albums from "./_components/organisms/Albums.organism";
+import Stack from "./_components/layouts/Stack.layout";
 import Group from "./_components/layouts/Group.layout";
-import AlbumDisc from "./_components/molecules/AlbumDisc.molecule";
+
+import DrawerMenu from "./_components/organisms/DrawerMenu.organism";
+import Events from "./_components/organisms/Events.organism";
 
 export default async function Home() {
   return (
-    <Main className="h-screen w-screen">
-      <Center className="h-screen w-screen">
-        <Group className="group" data-aos="fade-in">
-          <AlbumDisc
-            albumImg="cover1.jpeg"
-            albumLink="https://open.spotify.com/album/2H2caUAqHgoiCzi22ShNIG?highlight=spotify:track:0T7b4zA5yoAvlJN4MaOh1Y"
-          />
-        </Group>
-      </Center>
-    </Main>
+    <Stack className="bg-green-800">
+      <Group className="w-full items-center justify-between p-4">
+        <h1 className="font-rex-bold text-[30px] leading-[110%] text-white">
+          Mothmankiller
+        </h1>
+        <DrawerMenu />
+      </Group>
+      <HomeTemplate
+        albums={
+          <div className="h-full w-full border-y-[1px] border-white">
+            <Albums />
+          </div>
+        }
+        main={
+          <Stack className="gap-4 p-4">
+            <Events />
+          </Stack>
+        }
+      />
+    </Stack>
   );
 }
