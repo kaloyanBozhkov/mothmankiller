@@ -13,7 +13,6 @@ const useSlideEvents = <T extends HTMLElement>({
 }: UseSlideEventsProps) => {
   const ref = useRef<T>(null);
   const startXRef = useRef<number | null>(null);
-  const startYRef = useRef<number | null>(null);
   const isTouchEventRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -21,60 +20,44 @@ const useSlideEvents = <T extends HTMLElement>({
       if (typeof e.touches[0] === "undefined") return;
       isTouchEventRef.current = true;
       startXRef.current = e.touches[0].clientX;
-      startYRef.current = e.touches[0].clientY;
     };
 
     const handleMouseDown = (e: MouseEvent) => {
       isTouchEventRef.current = false;
       startXRef.current = e.clientX;
-      startYRef.current = e.clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (
         !isTouchEventRef.current ||
         startXRef.current === null ||
-        startYRef.current === null ||
         typeof e.touches[0] === "undefined"
       )
         return;
       const endX = e.touches[0].clientX;
-      const endY = e.touches[0].clientY;
-      handleSlide(endX, endY);
+      handleSlide(endX);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (
-        isTouchEventRef.current ||
-        startXRef.current === null ||
-        startYRef.current === null
-      )
-        return;
+      if (isTouchEventRef.current || startXRef.current === null) return;
       const endX = e.clientX;
-      const endY = e.clientY;
-      handleSlide(endX, endY);
+      handleSlide(endX);
     };
 
-    const handleSlide = (endX: number, endY: number) => {
+    const handleSlide = (endX: number) => {
       const startX = startXRef.current!;
-      const startY = startYRef.current!;
 
       const diffX = startX - endX;
-      const diffY = startY - endY;
 
-      console.log(diffX);
       // Detect a horizontal swipe only
-      //   if (Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > slideTreshold) {
         onSlideLeft();
       } else if (diffX < -slideTreshold) {
         onSlideRight();
       }
-      //   }
 
       // Reset the starting coordinates
       startXRef.current = null;
-      startYRef.current = null;
     };
 
     const handleTouchEnd = () => {
@@ -84,7 +67,6 @@ const useSlideEvents = <T extends HTMLElement>({
     const handleMouseUp = () => {
       if (!isTouchEventRef.current) {
         startXRef.current = null;
-        startYRef.current = null;
       }
     };
 

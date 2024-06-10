@@ -6,13 +6,12 @@ import Main from "../templates/Main.template";
 import { twMerge } from "tailwind-merge";
 import useSlideEvents from "@/app/hooks/useSlideEvents";
 import Stack from "../layouts/Stack.layout";
-import Group from "../layouts/Group.layout";
 import SlideDots from "../atoms/SlideDots.atom";
-import Disc from "../atoms/Disc.atom";
 
 const Albums = ({ className }: { className?: string }) => {
   const [active, setActive] = useState(0);
   const wrapperRef = useSlideEvents<HTMLDivElement>({
+    slideTreshold: 8,
     onSlideRight: () => {
       setActive((prev) => (prev === 0 ? 0 : prev - 1));
     },
@@ -29,7 +28,7 @@ const Albums = ({ className }: { className?: string }) => {
       className={twMerge("relative h-full overflow-visible", className)}
     >
       <div
-        className="relative flex h-full w-full flex-row transition-all duration-500 ease-out [&>div]:shrink-0"
+        className="relative flex h-full w-full flex-row transition-all duration-1000 ease-out [&>div]:shrink-0"
         style={{
           transform: `translateX(-${active * 100}%)`,
         }}
