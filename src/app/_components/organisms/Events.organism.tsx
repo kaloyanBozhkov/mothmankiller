@@ -19,12 +19,12 @@ const Events = () => {
       >
         <TabsList className="bg-transparent">
           <TabsTrigger value="upcoming" asChild>
-            <Center className="text-[24px]">
+            <Center className="cursor-pointer text-[24px]">
               <h2 className="font-rex-bold  leading-[24px]">Upcoming</h2>
             </Center>
           </TabsTrigger>
           <TabsTrigger value="past" asChild>
-            <Center className="text-[24px]">
+            <Center className="cursor-pointer text-[24px]">
               <h2 className="font-rex-bold  leading-[24px]">Previous</h2>
             </Center>
           </TabsTrigger>

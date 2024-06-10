@@ -17,7 +17,7 @@ const Main = ({
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="absolute inset-0 z-10">{children}</div>
-      <div className="inset absolute z-0 h-full w-full bg-white/10 backdrop-blur-xl"></div>
+      <div className="inset stuff absolute z-0 h-full w-full bg-white/10 backdrop-blur-xl"></div>
     </div>
   );
 };

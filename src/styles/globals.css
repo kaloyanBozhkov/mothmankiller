@@ -99,7 +99,6 @@
     --breakout-size: calc(
       (var(--breakout-max-width) - var(--content-max-width)) / 2
     );
-    background-color: var(--color-green-800);
     display: grid;
     grid-template-columns:
       [full-width-start] minmax(var(--padding-inline), 1fr)
@@ -111,20 +110,36 @@
       [content-end]
       minmax(0, var(--breakout-size)) [breakout-end]
       minmax(var(--padding-inline), 1fr) [full-width-end];
-
+    grid-auto-flow: dense;
     grid-template-rows: min-content;
 
     > :not(.breakout, .full-width) {
-      grid-column: content;
+      grid-column: content-start / content-end;
     }
 
     > .breakout {
-      grid-column: breakout;
+      grid-column: breakout-start / breakout-end;
     }
 
     > .full-width {
-      grid-column: full-width;
+      grid-column: full-width-start / full-width-end;
     }
+  }
+
+  /* safari on ios cant handle complex template columns */
+  @supports (-webkit-touch-callout: none) {
+    @media (max-width: 800px) {
+      .grid-page {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  /* @TODO fix autoprefixer for tailwind to output automatically */
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
   }
 }
 
@@ -132,4 +147,24 @@ html,
 body {
   width: 100%;
   height: 100%;
+  background-color: var(--color-green-800);
+}
+
+* {
+  /* for desktop show the scrollbar but make it thin! */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #a3a3a3;
+    border-radius: 4px;
+  }
+
+  &:not(:hover) {
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+  }
 }

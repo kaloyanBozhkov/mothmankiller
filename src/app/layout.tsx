@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">{CSSVaraibles}</style>
       </head>
       <body>
