@@ -1,62 +1,62 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Center from "../layouts/Center.layour";
 import AlbumDisc from "../molecules/AlbumDisc.molecule";
 import Main from "../templates/Main.template";
 import { twMerge } from "tailwind-merge";
-import useSlideEvents from "@/app/hooks/useSlideEvents";
 import Stack from "../layouts/Stack.layout";
 import SlideDots from "../atoms/SlideDots.atom";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/app/_components/shadcn/Carousel.shadcn";
 
 const Albums = ({ className }: { className?: string }) => {
   const [active, setActive] = useState(0);
-  const wrapperRef = useSlideEvents<HTMLDivElement>({
-    slideTreshold: 8,
-    onSlideRight: () => {
-      setActive((prev) => (prev === 0 ? 0 : prev - 1));
-    },
-    onSlideLeft: () => {
-      setActive((prev) =>
-        prev === ALBUMS.length - 1 ? ALBUMS.length - 1 : prev + 1,
-      );
-    },
-  });
 
   return (
-    <div
-      ref={wrapperRef}
-      className={twMerge("relative h-full overflow-visible", className)}
-    >
-      <div
-        className="relative flex h-full w-full flex-row transition-all duration-1000 ease-out [&>div]:shrink-0"
-        style={{
-          transform: `translateX(-${active * 100}%)`,
-        }}
-      >
-        {ALBUMS.map(({ name, link, cover, type }, idx) => (
-          <Main
-            className="relative h-full w-full"
-            bgImage={`/assets/${cover}`}
-            key={idx}
-          >
-            <Center className="h-full w-full pb-[20px]">
-              <Stack className="gap-4">
-                <Stack className="gap-0">
-                  <p className="font-rex-bold text-[16px] text-white">{type}</p>
-                  <h1 className="font-rex-bold text-[30px] leading-[110%] text-white">
-                    {name}
-                  </h1>
-                </Stack>
-                <AlbumDisc
-                  albumImg={cover}
-                  albumLink={link}
-                  className="animate-breathe"
-                  onlyDisc={type === "Single"}
-                />
-              </Stack>
-            </Center>
-          </Main>
-        ))}
+    <div className={twMerge("relative h-full overflow-visible", className)}>
+      <div className="relative h-full w-full">
+        <Carousel
+          className="h-full w-full"
+          onSlideChanged={setActive}
+          currentSlide={active}
+        >
+          <CarouselContent className="h-full w-full">
+            {ALBUMS.map(({ name, link, cover, type }, idx) => (
+              <CarouselItem key={idx} className="h-full">
+                <Main
+                  className="relative h-full w-full"
+                  bgImage={`/assets/${cover}`}
+                >
+                  <Center className="h-full w-full pb-[20px]">
+                    <Stack className="gap-4">
+                      <Stack className="gap-0">
+                        <p className="font-rex-bold text-[16px] text-white">
+                          {type}
+                        </p>
+                        <h1 className="font-rex-bold text-[30px] leading-[110%] text-white">
+                          {name}
+                        </h1>
+                      </Stack>
+                      <AlbumDisc
+                        albumImg={cover}
+                        albumLink={link}
+                        className="animate-breathe"
+                        onlyDisc={type === "Single"}
+                      />
+                    </Stack>
+                  </Center>
+                </Main>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-[20px] z-10" />
+          <CarouselNext className="absolute right-[20px] z-10" />
+        </Carousel>
       </div>
       <SlideDots
         count={ALBUMS.length}
