@@ -40,7 +40,10 @@ export default async function syncEventsServerless(
       },
     );
 
+  console.log(1);
+
   if (req.method !== "POST" || !req.body) return oops();
+  console.log(2);
 
   try {
     const input = await req.body.getReader().read(),
@@ -48,12 +51,16 @@ export default async function syncEventsServerless(
       string = decoder.decode(input.value),
       payload = JSON.parse(string) as SyncCurrenciesPayload,
       { secret, events } = SyncEventsSchema.parse(payload);
+    console.log(3);
 
     if (!secret || secret !== process.env.SENSITIVE_CRUD_SECRET) return oops();
+    console.log(4);
 
     event.waitUntil(
       (async () => {
         try {
+          console.log(5);
+
           const resp = await fetchPostJSON<{ success: boolean }>(
             `${getBaseUrl()}/api/github/update-file`,
             {
