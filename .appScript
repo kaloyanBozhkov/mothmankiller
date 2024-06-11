@@ -52,7 +52,7 @@ function sendJSON(onSent) {
   }).filter(row => Object.keys(row).length > 0); // Remove empty rows
 
   const payload = {
-    method: 'post',
+    method: 'POST',
     contentType: 'application/json',
     payload: JSON.stringify({
       events: data,
