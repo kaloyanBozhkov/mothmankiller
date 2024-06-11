@@ -40,7 +40,7 @@ export default async function syncEventsServerless(
       },
     );
 
-  console.log(1);
+  console.log(1, JSON.stringify(req));
 
   if (req.method !== "POST" || !req.body) return oops();
   console.log(2);
