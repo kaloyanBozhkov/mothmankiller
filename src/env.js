@@ -11,6 +11,8 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    GITHUB_ACCESS_TOKEN: z.string(),
+    SENSITIVE_CRUD_SECRET: z.string(),
   },
 
   /**
@@ -29,6 +31,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
+    SENSITIVE_CRUD_SECRET: process.env.SENSITIVE_CRUD_SECRET,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
