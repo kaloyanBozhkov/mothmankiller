@@ -94,7 +94,7 @@ export const capitalizeSentence = (s: string) =>
         .replaceAll(/\s\s+/g, " ")
         .split(" ")
         .reduce(
-          (acc, w) => [...acc, w[0].toUpperCase() + w.slice(1)],
+          (acc, w) => [...acc, w[0]!.toUpperCase() + w.slice(1)],
           [] as string[],
         )
         .join(" ")
