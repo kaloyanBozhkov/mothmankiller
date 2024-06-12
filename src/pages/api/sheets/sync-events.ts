@@ -13,8 +13,11 @@ const SyncEventsSchema = z.object({
       title: z.string(),
       description: z.string(),
       location: z.string(),
-      cover: z.string().url(),
-      link: z.string().url(),
+      cover: z.string(),
+      link: z.string(),
+      price: z.string(),
+      venue: z.string(),
+      drivePhotos: z.string(),
     }),
   ),
 });
@@ -40,10 +43,6 @@ export default async function syncEventsServerless(
       },
     );
 
-  console.log(req.method);
-  console.log(req.body);
-  console.log(req.headers);
-
   if (req.method !== "POST" || !req.body) return oops();
 
   try {
@@ -58,8 +57,6 @@ export default async function syncEventsServerless(
     event.waitUntil(
       (async () => {
         try {
-          console.log(5);
-
           const resp = await fetchPostJSON<{ success: boolean }>(
             `${getBaseUrl()}/api/github/update-file`,
             {
