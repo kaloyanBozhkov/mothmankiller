@@ -152,11 +152,7 @@ const EventsList = ({
             <p className="font-rex-bold text-[24px]">{event.price}</p>
           )}
           {event.drivePhotos && event.drivePhotos !== "-" ? (
-            <Link
-              href={event.drivePhotos as string}
-              target="_blank"
-              className="flex-1"
-            >
+            <Link href={event.drivePhotos} target="_blank" className="flex-1">
               <Button className="w-full">View Photos</Button>
             </Link>
           ) : (
