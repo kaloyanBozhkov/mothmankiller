@@ -19,28 +19,27 @@ const AlbumDisc = ({
   onlyDisc?: boolean;
 }) => {
   const [opened, setOpened] = useState(initialOpened);
-  const clicked = useRef(false);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     setOpened(initialOpened);
   }, [initialOpened]);
 
   useEffect(() => {
-    if (!opened || !clicked.current) return;
+    if (!clicked) return;
     const id = setTimeout(() => {
       window.open(albumLink, "_blank");
-      setOpened(false);
+      setClicked(false);
     }, 800);
-    clicked.current = false;
+
     return () => clearTimeout(id);
-  });
+  }, [clicked, albumLink]);
 
   return (
     <div
       className={twMerge("group relative cursor-pointer", className)}
       onClick={() => {
-        clicked.current = true;
-        setOpened(true);
+        setClicked(true);
       }}
     >
       <div
@@ -64,6 +63,7 @@ const AlbumDisc = ({
         )}
         <div
           className={twMerge(
+            clicked ? "translate-x-[55%]" : "",
             "absolute inset-0 -z-10 transition-all ease-in-out",
             opened ? "translate-x-[45%] duration-1000" : "duration-500",
             initialOpened ? "delay-700" : "",

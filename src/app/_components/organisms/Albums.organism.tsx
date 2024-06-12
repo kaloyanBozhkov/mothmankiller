@@ -24,6 +24,7 @@ const Albums = ({ className }: { className?: string }) => {
           className="h-full w-full"
           onSlideChanged={setActive}
           currentSlide={active}
+          opts={{ duration: 50 }}
         >
           <CarouselContent className="h-full w-full">
             {ALBUMS.map(({ name, link, cover, type }, idx) => (
