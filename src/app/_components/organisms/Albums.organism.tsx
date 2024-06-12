@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Center from "../layouts/Center.layour";
 import AlbumDisc from "../molecules/AlbumDisc.molecule";
 import Main from "../templates/Main.template";
@@ -16,6 +16,15 @@ import {
 
 const Albums = ({ className }: { className?: string }) => {
   const [active, setActive] = useState(0);
+  const [startAnim, setStartAnim] = useState(false);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setStartAnim(true);
+    }, 500);
+
+    return () => clearTimeout(id);
+  }, []);
 
   return (
     <div className={twMerge("relative h-full overflow-visible", className)}>
@@ -48,7 +57,9 @@ const Albums = ({ className }: { className?: string }) => {
                         albumLink={link}
                         className="animate-breathe"
                         onlyDisc={type === "Single"}
-                        initialOpened={type === "Album" && idx === active}
+                        initialOpened={
+                          type === "Album" && idx === active && startAnim
+                        }
                       />
                     </Stack>
                   </Center>

@@ -21,6 +21,9 @@ import { Button } from "../shadcn/Button.shadcn";
 import Link from "next/link";
 import Group from "../layouts/Group.layout";
 import { Fragment } from "react";
+import DateCard from "../molecules/DateCard.molecule";
+import { twMerge } from "tailwind-merge";
+import BuyTickets from "./BuyTickets.organism";
 
 const Events = () => {
   const { upcoming, past } = categorizeAndSortEvents(EVENTS);
@@ -74,41 +77,35 @@ interface CategorizedEvents {
 }
 
 function categorizeAndSortEvents(events: Event[]): CategorizedEvents {
-  const parseEventDateTime = (event: Event): Date => {
-    const dateStr = event.date;
-    const timeStr = event.time;
+  const eventsParsed = events
+    .map((event) => {
+      const d = (() => {
+        try {
+          return new Date(event.date);
+        } catch (err) {
+          return null;
+        }
+      })();
+      return {
+        ...event,
+        date: d,
+      };
+    })
+    .filter((e) => e.date !== null);
 
-    return new Date(
-      dateStr.split("/").reverse().join("-") +
-        "T" +
-        timeStr.replace(".", ":").replace("AM", " AM").replace("PM", " PM"),
-    );
-  };
-
-  const now = new Date();
-
-  const upcomingEvents: Event[] = [];
-  const pastEvents: Event[] = [];
-
-  for (const event of events) {
-    const eventDateTime = parseEventDateTime(event);
-    if (eventDateTime > now) {
-      upcomingEvents.push(event);
-    } else {
-      pastEvents.push(event);
-    }
-  }
-
-  const sortEventsByDateDesc = (a: Event, b: Event): number => {
-    return parseEventDateTime(b).getTime() - parseEventDateTime(a).getTime();
-  };
-
-  upcomingEvents.sort(sortEventsByDateDesc);
-  pastEvents.sort(sortEventsByDateDesc);
+  const eventsSorted = eventsParsed.sort(
+    // @TODO Update to TS 5.5. and drop !
+    (a, b) => b.date!.getTime() - a.date!.getTime(),
+  );
+  const rightNow = Date.now();
 
   return {
-    upcoming: upcomingEvents,
-    past: pastEvents,
+    past: eventsSorted
+      .filter((e) => e.date!.getTime() < rightNow)
+      .map((d) => ({ ...d, date: d.date?.toLocaleDateString() ?? "-" })),
+    upcoming: eventsSorted
+      .filter((e) => e.date!.getTime() > rightNow)
+      .map((d) => ({ ...d, date: d.date?.toLocaleDateString() ?? "-" })),
   };
 }
 
@@ -118,49 +115,92 @@ const EventsList = ({
 }: {
   events: Event[];
   isPast?: boolean;
-}) =>
-  events.map((event, index) => (
-    <Card key={index} className="bg-white">
-      <CardHeader>
-        <CardTitle className="break-words">{event.title}</CardTitle>
-        <CardDescription>
-          {event.description.split("\n").map((e, idx) => (
-            <Fragment key={idx}>
-              {e}
-              <br />
-            </Fragment>
-          ))}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Link href={event.link} target="_blank">
-          <div className="shadow-md">
-            <div className="overflow-hidden rounded-md [&:hover_img]:scale-[1.05]">
-              {/* eslint-disable-next-line */}
-              <img
-                src={event.cover}
-                className="h-auto w-full transition-all"
-                alt="Cover"
-              />
+}) => {
+  return events.map((event, index) => {
+    const { date, isGoodDate } = (() => {
+      try {
+        return {
+          date: new Date(event.date),
+          isGoodDate: true,
+        };
+      } catch (err) {
+        return {
+          date: "-",
+          isGoodDate: false,
+        };
+      }
+    })();
+
+    return (
+      <Card key={index} className="bg-white">
+        <CardHeader className={isGoodDate ? "block" : ""}>
+          {/* <Group className="items-start gap-[10px]"> */}
+          {isGoodDate && (
+            <div className="float-left mr-2">
+              <DateCard date={date as Date} />
             </div>
+          )}
+          <div className={twMerge(isGoodDate ? "!mt-0" : "")}>
+            <CardTitle className={twMerge("break-words")}>
+              {event.title}
+            </CardTitle>
           </div>
-        </Link>
-      </CardContent>
-      <CardFooter>
-        <Group className="w-full items-center justify-between">
-          {isPast ? null : (
-            <p className="font-rex-bold text-[24px]">{event.price}</p>
-          )}
-          {event.drivePhotos && event.drivePhotos !== "-" ? (
-            <Link href={event.drivePhotos} target="_blank" className="flex-1">
-              <Button className="w-full">View Photos</Button>
-            </Link>
-          ) : (
-            <Link href={event.link} target="_blank">
-              <Button>View Event</Button>
-            </Link>
-          )}
-        </Group>
-      </CardFooter>
-    </Card>
-  ));
+          <CardDescription>
+            {event.description.split("\n").map((e, idx) => (
+              <Fragment key={idx}>
+                {e}
+                <br />
+              </Fragment>
+            ))}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Link href={event.link} target="_blank">
+            <div className="shadow-md">
+              <div className="overflow-hidden rounded-md [&:hover_img]:scale-[1.05]">
+                {/* eslint-disable-next-line */}
+                <img
+                  src={event.cover}
+                  className="h-auto w-full transition-all"
+                  alt="Cover"
+                />
+              </div>
+            </div>
+          </Link>
+        </CardContent>
+        <CardFooter>
+          <Stack className="w-full gap-4">
+            <Group className="w-full items-center justify-between">
+              {isPast ? null : (
+                <p className="font-rex-bold text-[24px]">{event.price}</p>
+              )}
+              {event.drivePhotos && event.drivePhotos !== "-" ? (
+                <Link
+                  href={event.drivePhotos}
+                  target="_blank"
+                  className="flex-1"
+                >
+                  <Button className="w-full">View Photos</Button>
+                </Link>
+              ) : (
+                <Link
+                  href={event.link}
+                  target="_blank"
+                  className={isPast ? "flex-1" : ""}
+                >
+                  <Button
+                    variant={isPast ? undefined : "link"}
+                    className={isPast ? "w-full" : ""}
+                  >
+                    View Event
+                  </Button>
+                </Link>
+              )}
+            </Group>
+            {!isPast && <BuyTickets />}
+          </Stack>
+        </CardFooter>
+      </Card>
+    );
+  });
+};
