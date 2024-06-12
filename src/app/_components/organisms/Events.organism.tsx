@@ -117,7 +117,7 @@ const EventsList = ({
   isPast = false,
 }: {
   events: Event[];
-  isPast: boolean;
+  isPast?: boolean;
 }) =>
   events.map((event, index) => (
     <Card key={index} className="bg-white">
