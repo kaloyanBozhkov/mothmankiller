@@ -3,7 +3,7 @@
 import { twMerge } from "tailwind-merge";
 import AlbumCover from "../atoms/AlbumCover.atom";
 import Disc from "../atoms/Disc.atom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const AlbumDisc = ({
   className = "",
