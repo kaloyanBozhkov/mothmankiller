@@ -12,7 +12,7 @@ const Disc = ({
   return (
     <div
       className={twMerge(
-        "bg-vinyl relative h-full w-full animate-[spin_3s_infinite_linear] bg-contain",
+        "relative h-full w-full animate-[spin_3s_infinite_linear] bg-vinyl bg-contain bg-center bg-no-repeat",
         className,
       )}
     >

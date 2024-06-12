@@ -141,6 +141,15 @@
     -webkit-backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
   }
+
+  .loading-img {
+    background-repeat: repeat;
+    background: url(/assets/loading-img.png);
+  }
+
+  .pause {
+    animation-play-state: paused;
+  }
 }
 
 html,

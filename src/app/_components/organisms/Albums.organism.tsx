@@ -47,6 +47,7 @@ const Albums = ({ className }: { className?: string }) => {
                         albumLink={link}
                         className="animate-breathe"
                         onlyDisc={type === "Single"}
+                        initialOpened={type === "Album" && idx === active}
                       />
                     </Stack>
                   </Center>

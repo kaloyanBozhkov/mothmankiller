@@ -22,6 +22,10 @@ const AlbumDisc = ({
   const clicked = useRef(false);
 
   useEffect(() => {
+    setOpened(initialOpened);
+  }, [initialOpened]);
+
+  useEffect(() => {
     if (!opened || !clicked.current) return;
     const id = setTimeout(() => {
       window.open(albumLink, "_blank");
@@ -33,24 +37,43 @@ const AlbumDisc = ({
 
   return (
     <div
-      className={twMerge("relative cursor-pointer", className)}
+      className={twMerge("group relative cursor-pointer", className)}
       onClick={() => {
         clicked.current = true;
         setOpened(true);
       }}
     >
-      {onlyDisc ? (
-        <div className="h-[200px] w-[200px] hover:scale-[99%] sm:h-[300px] sm:w-[300px]" />
-      ) : (
-        <AlbumCover img={albumImg} className="z-10" />
-      )}
       <div
         className={twMerge(
-          "group-hover: absolute inset-0 -z-10 transition-all ease-in-out",
-          opened ? "translate-x-[40%] duration-1000" : "duration-500",
+          opened ? "translate-x-[-15%] duration-1000" : "duration-500",
+          initialOpened ? "delay-700" : "",
         )}
       >
-        <Disc coverImgSrc={`/assets/${albumImg}`} />
+        {onlyDisc ? (
+          <div className="h-[200px] w-[200px] hover:scale-[99%] sm:h-[300px] sm:w-[300px]" />
+        ) : (
+          <AlbumCover
+            img={albumImg}
+            className={twMerge(
+              "z-10",
+              opened
+                ? "group-hover:translate-x-[-15%] group-hover:translate-y-[3%] group-hover:rotate-[-3deg]"
+                : "",
+            )}
+          />
+        )}
+        <div
+          className={twMerge(
+            "absolute inset-0 -z-10 transition-all ease-in-out",
+            opened ? "translate-x-[45%] duration-1000" : "duration-500",
+            initialOpened ? "delay-700" : "",
+          )}
+        >
+          <Disc
+            coverImgSrc={`/assets/${albumImg}`}
+            className={twMerge(opened ? "group-hover:pause" : "", "w-[95%]")}
+          />
+        </div>
       </div>
     </div>
   );

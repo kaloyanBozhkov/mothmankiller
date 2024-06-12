@@ -19,8 +19,8 @@ import {
 } from "@/app/_components/shadcn/Card.shadcn";
 import { Button } from "../shadcn/Button.shadcn";
 import Link from "next/link";
-import Image from "next/image";
 import Group from "../layouts/Group.layout";
+import { Fragment } from "react";
 
 const Events = () => {
   const { upcoming, past } = categorizeAndSortEvents(EVENTS);
@@ -31,17 +31,17 @@ const Events = () => {
       </h2>
       <Tabs
         defaultValue={upcoming.length === 0 ? "past" : "upcoming"}
-        className="flex w-[400px] max-w-full flex-col gap-4"
+        className="flex w-[420px] max-w-full flex-col gap-4"
       >
         <TabsList className="bg-transparent">
           <TabsTrigger value="upcoming" asChild>
             <Center className="cursor-pointer text-[24px]">
-              <h2 className="font-rex-bold  leading-[24px]">Upcoming</h2>
+              <h2 className="font-rex-bold leading-[24px]">Upcoming</h2>
             </Center>
           </TabsTrigger>
           <TabsTrigger value="past" asChild>
             <Center className="cursor-pointer text-[24px]">
-              <h2 className="font-rex-bold  leading-[24px]">Previous</h2>
+              <h2 className="font-rex-bold leading-[24px]">Previous</h2>
             </Center>
           </TabsTrigger>
         </TabsList>
@@ -55,8 +55,8 @@ const Events = () => {
           )}
         </TabsContent>
         <TabsContent value="past">
-          <Stack className="gap-4">
-            <EventsList events={past} />
+          <Stack className="gap-6">
+            <EventsList events={past} isPast />
           </Stack>
         </TabsContent>
       </Tabs>
@@ -66,15 +66,7 @@ const Events = () => {
 
 export default Events;
 
-interface Event {
-  date: string;
-  time: string;
-  title: string;
-  description: string;
-  location: string;
-  cover: string;
-  link: string;
-}
+type Event = (typeof EVENTS)[0];
 
 interface CategorizedEvents {
   upcoming: Event[];
@@ -85,9 +77,6 @@ function categorizeAndSortEvents(events: Event[]): CategorizedEvents {
   const parseEventDateTime = (event: Event): Date => {
     const dateStr = event.date;
     const timeStr = event.time;
-
-    const is12HourFormat = timeStr.includes("AM") || timeStr.includes("PM");
-    const dtFormat = is12HourFormat ? "dd/MM/yyyy hh.mma" : "dd/MM/yyyy HH.mm";
 
     return new Date(
       dateStr.split("/").reverse().join("-") +
@@ -123,27 +112,58 @@ function categorizeAndSortEvents(events: Event[]): CategorizedEvents {
   };
 }
 
-const EventsList = ({ events }: { events: Event[] }) =>
+const EventsList = ({
+  events,
+  isPast = false,
+}: {
+  events: Event[];
+  isPast: boolean;
+}) =>
   events.map((event, index) => (
     <Card key={index} className="bg-white">
       <CardHeader>
-        <CardTitle>{event.title}</CardTitle>
-        <CardDescription>{event.description}</CardDescription>
+        <CardTitle className="break-words">{event.title}</CardTitle>
+        <CardDescription>
+          {event.description.split("\n").map((e, idx) => (
+            <Fragment key={idx}>
+              {e}
+              <br />
+            </Fragment>
+          ))}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>content</p>
-        <img
-          src={event.cover}
-          className="h-auto w-full rounded-md"
-          alt="Cover"
-        />
+        <Link href={event.link} target="_blank">
+          <div className="shadow-md">
+            <div className="overflow-hidden rounded-md [&:hover_img]:scale-[1.05]">
+              {/* eslint-disable-next-line */}
+              <img
+                src={event.cover}
+                className="h-auto w-full transition-all"
+                alt="Cover"
+              />
+            </div>
+          </div>
+        </Link>
       </CardContent>
       <CardFooter>
-        <Group>
-          <p>{event.location}</p>
-          <Link href={event.link} target="_blank">
-            <Button>View Event</Button>
-          </Link>
+        <Group className="w-full items-center justify-between">
+          {isPast ? null : (
+            <p className="font-rex-bold text-[24px]">{event.price}</p>
+          )}
+          {event.drivePhotos && event.drivePhotos !== "-" ? (
+            <Link
+              href={event.drivePhotos as string}
+              target="_blank"
+              className="flex-1"
+            >
+              <Button className="w-full">View Photos</Button>
+            </Link>
+          ) : (
+            <Link href={event.link} target="_blank">
+              <Button>View Event</Button>
+            </Link>
+          )}
         </Group>
       </CardFooter>
     </Card>
