@@ -190,7 +190,7 @@ const EventsList = ({
                 >
                   <Button
                     variant={isPast ? undefined : "link"}
-                    className={isPast ? "w-full" : ""}
+                    className={twMerge(isPast ? "w-full" : "px-0")}
                   >
                     View Event
                   </Button>

@@ -63,7 +63,8 @@ const AlbumDisc = ({
         )}
         <div
           className={twMerge(
-            clicked ? "translate-x-[55%]" : "",
+            clicked && !onlyDisc ? "translate-x-[55%]" : "",
+            clicked && onlyDisc ? "scale-90" : "",
             "absolute inset-0 -z-10 transition-all ease-in-out",
             opened ? "translate-x-[45%] duration-1000" : "duration-500",
             initialOpened ? "delay-700" : "",
@@ -71,7 +72,11 @@ const AlbumDisc = ({
         >
           <Disc
             coverImgSrc={`/assets/${albumImg}`}
-            className={twMerge(opened ? "group-hover:pause" : "", "w-[95%]")}
+            className={twMerge(
+              opened ? "group-hover:pause" : "",
+              "w-[95%]",
+              clicked && onlyDisc ? "pause" : "",
+            )}
           />
         </div>
       </div>
