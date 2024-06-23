@@ -54,7 +54,9 @@ const Events = () => {
               No upcomng events, come back later.
             </p>
           ) : (
-            <EventsList events={upcoming} />
+            <Stack className="gap-6">
+              <EventsList events={upcoming} />
+            </Stack>
           )}
         </TabsContent>
         <TabsContent value="past">
