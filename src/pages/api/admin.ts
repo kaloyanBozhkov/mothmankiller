@@ -12,10 +12,7 @@ export default async function handler(
 ) {
   try {
     adminSchema.parse(req.query);
-    const ADMIN_PAGE =
-      "https://docs.google.com/spreadsheets/d/1q1u2RKcqyx1w4fGeXwTcdoo4haym9EJQnE0FLpWm6I0/edit?gid=0#gid=0";
-
-    res.status(301).redirect(ADMIN_PAGE);
+    res.status(301).redirect(env.ADMIN_PAGE);
   } catch (error) {
     res.status(301).redirect("/");
   }

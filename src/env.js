@@ -14,6 +14,7 @@ export const env = createEnv({
     GITHUB_ACCESS_TOKEN: z.string(),
     SENSITIVE_CRUD_SECRET: z.string(),
     ADMIN_SECRET: z.string(),
+    ADMIN_PAGE: z.string().url(),
   },
 
   /**
@@ -35,6 +36,7 @@ export const env = createEnv({
     GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
     SENSITIVE_CRUD_SECRET: process.env.SENSITIVE_CRUD_SECRET,
     ADMIN_SECRET: process.env.ADMIN_SECRET,
+    ADMIN_PAGE: process.env.ADMIN_PAGE,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
