@@ -8,6 +8,7 @@ import Center from "../layouts/Center.layour";
 import Stack from "../layouts/Stack.layout";
 
 import EVENTS from "@/automated/events.json";
+import COVERS from "@/automated/event-covers.json";
 
 import {
   Card,
@@ -26,7 +27,7 @@ import { twMerge } from "tailwind-merge";
 import BuyTickets from "./BuyTickets.organism";
 
 const Events = () => {
-  const { upcoming, past } = categorizeAndSortEvents(EVENTS);
+  const { upcoming, past } = categorizeAndSortEvents(EVENTS, COVERS);
   return (
     <Stack className="items-center gap-4">
       <h2 className="font-rex-bold text-[22px] leading-[100%] text-white">
@@ -72,13 +73,17 @@ const Events = () => {
 export default Events;
 
 type Event = (typeof EVENTS)[0];
+type Covers = typeof COVERS;
 
 interface CategorizedEvents {
   upcoming: Event[];
   past: Event[];
 }
 
-function categorizeAndSortEvents(events: Event[]): CategorizedEvents {
+function categorizeAndSortEvents(
+  events: Event[],
+  covers: Covers,
+): CategorizedEvents {
   const eventsParsed = events
     .map((event) => {
       const d = (() => {
@@ -88,8 +93,15 @@ function categorizeAndSortEvents(events: Event[]): CategorizedEvents {
           return null;
         }
       })();
+      const cover = covers[event.cover as keyof typeof covers];
+
+      if (!cover) {
+        console.warn(`No cover found in covers JSON for event: ${event.title}`);
+      }
+
       return {
         ...event,
+        cover: `data:image/png;base64,${cover}`,
         date: d,
       };
     })
