@@ -13,6 +13,7 @@ export const env = createEnv({
       .default("development"),
     GITHUB_ACCESS_TOKEN: z.string(),
     SENSITIVE_CRUD_SECRET: z.string(),
+    ADMIN_SECRET: z.string(),
   },
 
   /**
@@ -33,6 +34,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
     SENSITIVE_CRUD_SECRET: process.env.SENSITIVE_CRUD_SECRET,
+    ADMIN_SECRET: process.env.ADMIN_SECRET,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
